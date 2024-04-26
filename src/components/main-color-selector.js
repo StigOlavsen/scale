@@ -34,14 +34,14 @@ const SliderWrapper = styled.div`
 
 const MainColorSelector = ({
   mainColor,
-  r,
-  g,
-  b,
+  h,
+  s,
+  l,
   onInputChange,
   onInputBlur,
-  onRChange,
-  onGChange,
-  onBChange,
+  onHChange,
+  onSChange,
+  onLChange,
 }) => (
   <InputsRow>
     <InputsRowItem wide>
@@ -49,21 +49,21 @@ const MainColorSelector = ({
 
       <SliderWrapper>
         <SliderLabel>
-          R
+          H
         </SliderLabel>
-        <Slider type='range' min={0} max={255} color={numberToHex(mainColor)} value={r} onChange={onRChange} />
+        <Slider type='range' min={0} max={360} color={numberToHex(mainColor)} value={h} onChange={onHChange} />
       </SliderWrapper>
       <SliderWrapper>
         <SliderLabel>
-          G
+          S
         </SliderLabel>
-        <Slider type='range' min={0} max={255} color={numberToHex(mainColor)} value={g} onChange={onGChange} />
+        <Slider type='range' min={0} max={100} color={numberToHex(mainColor)} value={s} onChange={onSChange} />
       </SliderWrapper>
       <SliderWrapper>
         <SliderLabel>
-          B
+          L
         </SliderLabel>
-        <Slider type='range' min={0} max={255} color={numberToHex(mainColor)} value={b} onChange={onBChange} />
+        <Slider type='range' min={0} max={100} color={numberToHex(mainColor)} value={l} onChange={onLChange} />
       </SliderWrapper>
     </InputsRowItem>
   </InputsRow>

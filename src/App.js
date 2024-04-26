@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import Color from 'color'
 import styled from 'styled-components'
 import DynamicInput from './components/dynamic-input.js'
 import Footer from './components/footer.js'
-import { isValidHex, numberToHex, hexToNumber, errorColor, defaultState, getColorsList } from './utils.js'
+import {
+  defaultState,
+  errorColor,
+  getColorsList,
+  hexToNumber,
+  isValidHex,
+  numberToHex
+} from './utils.js'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import GalleryApp from './components/gallery-app'
 import ColorsRow from './components/colors-row'
 import MainColorSelector from './components/main-color-selector'
 import BackgroundSelector from './components/background-selector'
 import Triggers from './components/triggers'
+
 
 const MainWrapper = styled.div`
   padding: 40px 80px;
@@ -115,9 +123,9 @@ const ScaleApp = () => {
 
   const initialState = getHash() || defaultState
   const [mainColor, setMainColor] = useState(initialState.mainColor)
-  const [r, setR] = useState(initialState.r)
-  const [g, setG] = useState(initialState.g)
-  const [b, setB] = useState(initialState.b)
+  const [h, setH] = useState(initialState.h)
+  const [s, setS] = useState(initialState.s)
+  const [l, setL] = useState(initialState.l)
 
   const [darkColorsAmount, setDarkColorsAmount] = useState(initialState.darkColorsAmount)
   const [darkestAmount, setDarkestAmount] = useState(initialState.darkestAmount)
@@ -140,9 +148,9 @@ const ScaleApp = () => {
     lightSaturation,
     darkSaturation,
     mainColor,
-    r,
-    g,
-    b,
+    h: h,
+    s: s,
+    l: l,
     bgColor,
   }
 
@@ -158,11 +166,11 @@ const ScaleApp = () => {
     document.getElementById('themeMetaTag').setAttribute('content', numberToHex(mainColor))
   }
 
-  const updateRgbWithMainColor = (color) => {
+  const updateHslWithMainColor = (color) => {
     if (isValidHex(numberToHex(color))) {
-      setR(Color(numberToHex(color)).rgb().red())
-      setG(Color(numberToHex(color)).rgb().green())
-      setB(Color(numberToHex(color)).rgb().blue())
+      setH(Color(numberToHex(color)).hue())
+      setS(Color(numberToHex(color)).saturationv())
+      setL(Color(numberToHex(color)).lightness())
     }
   }
 
@@ -178,26 +186,26 @@ const ScaleApp = () => {
 
     setMainColor(typedColorFiltered)
 
-    updateRgbWithMainColor(typedColorFiltered)
+    updateHslWithMainColor(typedColorFiltered)
   }
 
-  const rgbToMainColor = () => {
+  const hslToMainColor = () => {
     setTimeout(() => {
-      setMainColor(hexToNumber(Color(`rgb(${r}, ${g}, ${b})`).hex()))
+      setMainColor(hexToNumber(Color(`hsl(${(Math.round(h))}, ${(Math.round(s))}%, ${(Math.round(l))}%)`).hex()))
     }, 0)
   }
 
   const handleRChange = (value) => {
-    setR(value)
-    rgbToMainColor()
+    setH(value)
+    hslToMainColor()
   }
   const handleGChange = (value) => {
-    setG(value)
-    rgbToMainColor()
+    setS(value)
+    hslToMainColor()
   }
   const handleBChange = (value) => {
-    setB(value)
-    rgbToMainColor()
+    setL(value)
+    hslToMainColor()
   }
   
   const bgRefToNumber = (ref) => {
@@ -278,13 +286,13 @@ const ScaleApp = () => {
             <MainColorSelector
               onInputChange={handleMainColorChange}
               onInputBlur={(e) => !e.target.value && setMainColor(666)}
-              onRChange={(e) => handleRChange(e.target.value)}
-              onGChange={(e) => handleGChange(e.target.value)}
-              onBChange={(e) => handleBChange(e.target.value)}
+              onHChange={(e) => handleRChange(e.target.value)}
+              onSChange={(e) => handleGChange(e.target.value)}
+              onLChange={(e) => handleBChange(e.target.value)}
               mainColor={mainColor}
-              r={r}
-              g={g}
-              b={b}
+              h={h}
+              s={s}
+              l={l}
             />
             <BackgroundSelectorSection>
               <BackgroundSelector
@@ -299,9 +307,9 @@ const ScaleApp = () => {
                 mainColor={mainColor}
                 darkColors={darkColors}
                 lightColors={lightColors}
-                setR={setR}
-                setG={setG}
-                setB={setB}
+                setR={setH}
+                setG={setS}
+                setB={setL}
                 setDarkColorsAmount={setDarkColorsAmount}
                 setDarkestAmount={setDarkestAmount}
                 setDarkColorsMixRotate={setDarkColorsMixRotate}
@@ -310,7 +318,7 @@ const ScaleApp = () => {
                 setLightColorsMixRotate={setLightColorsMixRotate}
                 setLightSaturation={setLightSaturation}
                 setDarkSaturation={setDarkSaturation}
-                rgbToMainColor={rgbToMainColor}
+                rgbToMainColor={hslToMainColor}
               />
             </TriggersSection>
           </GlobalConfigSection>

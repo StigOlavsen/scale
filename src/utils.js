@@ -19,9 +19,9 @@ export const defaultState = {
   darkSaturation: 14,
 
   mainColor: initialColor,
-  r: Color(numberToHex(initialColor)).rgb().red(),
-  g: Color(numberToHex(initialColor)).rgb().green(),
-  b: Color(numberToHex(initialColor)).rgb().blue(),
+  h: Color(numberToHex(initialColor)).hue(),
+  s: Color(numberToHex(initialColor)).saturationl(),
+  l: Color(numberToHex(initialColor)).lightness(),
 
   bgColor: 'white',
 }
